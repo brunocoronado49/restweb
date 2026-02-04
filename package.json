@@ -2,7 +2,7 @@
   "name": "restweb",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.ts",
   "scripts": {
     "dev": "tsnd --respawn --clear src/main.ts",
     "build": "rimraf ./dist && tsc",
