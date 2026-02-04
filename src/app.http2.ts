@@ -3,8 +3,8 @@ import http2 from "http2";
 
 const server = http2.createSecureServer(
   {
-    key: "",
-    cert: "",
+    key: fs.readFileSync("./keys/server.key"),
+    cert: fs.readFileSync("./keys/server.crt"),
   },
   (req, res) => {
     console.log(req.url);
@@ -39,8 +39,13 @@ const server = http2.createSecureServer(
       res.writeHead(200, { "Content-Type": "text/css" });
     }
 
-    const responseContent = fs.readFileSync(`./public${req.url}`, "utf-8");
-    res.end(responseContent);
+    try {
+      const responseContent = fs.readFileSync(`./public${req.url}`, "utf-8");
+      res.end(responseContent);
+    } catch (error) {
+      res.writeHead(404, { "Content-Type": "text/html" });
+      res.end();
+    }
   },
 );
 
