@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { Request, Response } from "express";
 
 const todos = [
-    { id: 1, text: 'Buy milk', createdAt: new Date() },
-    { id: 2, text: 'Buy breed', createdAt: null },
-    { id: 3, text: 'Buy butter', createdAt: new Date() },
+    { id: 1, text: "Buy milk", createdAt: new Date() },
+    { id: 2, text: "Buy breed", createdAt: null },
+    { id: 3, text: "Buy butter", createdAt: new Date() },
 ];
 
 export class TodosController {
@@ -17,7 +17,7 @@ export class TodosController {
     //* get one Todo task
     public getTodoById = (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
-        if (isNaN(id)) return res.status(400).json({ error: 'Id argument is not a number.' });
+        if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
         const todo = todos.find(todo => todo.id === id);
 
@@ -26,7 +26,7 @@ export class TodosController {
 
     public createTodo = (req: Request, res: Response) => {
         const { text } = req.body;
-        if (!text) return res.status(400).json({ error: 'Text property is required.' });
+        if (!text) return res.status(400).json({ error: "Text property is required." });
 
         const newTodo = {
             id: todos.length + 1,
@@ -41,7 +41,7 @@ export class TodosController {
 
     public updateTodo = (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
-        if (isNaN(id)) return res.status(400).json({ error: 'Id argument is not a number.' });
+        if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
         const todo = todos.find(todo => todo.id === id);
         if (!todo) return res.status(404).json({ error: `Todo with id ${id} not found` });
@@ -49,7 +49,7 @@ export class TodosController {
         const { text, createdAt } = req.body;
 
         todo.text = text || todo.text;
-        createdAt === 'null'
+        createdAt === "null"
             ? (todo.createdAt = null)
             : (todo.createdAt = new Date(createdAt || todo.createdAt));
 
@@ -58,7 +58,7 @@ export class TodosController {
 
     public deleteTodo = (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
-        if (isNaN(id)) return res.status(400).json({ error: 'Id argument is not a number.' });
+        if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
         const todo = todos.find(todo => todo.id === id);
         if (!todo) return res.status(404).json({ error: `Todo with id ${id} not found` });

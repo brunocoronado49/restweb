@@ -1,5 +1,5 @@
-import express, { Router } from 'express';
-import path from 'path';
+import express, { Router } from "express";
+import path from "path";
 
 interface Options {
     port: number;
@@ -14,7 +14,7 @@ export class Server {
     private readonly routes: Router;
 
     constructor(options: Options) {
-        const { port, routes, publicPath = 'public' } = options;
+        const { port, routes, publicPath = "public" } = options;
         this.port = port;
         this.publicPath = publicPath;
         this.routes = routes;
