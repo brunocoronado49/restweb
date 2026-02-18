@@ -2,4 +2,8 @@
 /dist
 /keys
 /public/assets/heroes
+/postgres
+/prisma
+/src/generated
 .env
+/generated/prisma
