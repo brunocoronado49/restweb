@@ -1,70 +1,80 @@
 import { Request, Response } from "express";
-
-const todos = [
-    { id: 1, text: "Buy milk", createdAt: new Date() },
-    { id: 2, text: "Buy breed", createdAt: null },
-    { id: 3, text: "Buy butter", createdAt: new Date() },
-];
+import { prisma } from "../../data/postgres";
 
 export class TodosController {
     constructor() {}
 
     //* get All Todos tasks
-    public getTodos = (_: Request, res: Response) => {
+    public getTodos = async (_: Request, res: Response) => {
+        const todos = await prisma.todo.findMany();
         return res.json(todos);
     };
 
     //* get one Todo task
-    public getTodoById = (req: Request, res: Response) => {
+    public getTodoById = async (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
-        const todo = todos.find(todo => todo.id === id);
+        const todo = await prisma.todo.findFirst({
+            where: { id },
+        });
 
         todo ? res.json(todo) : res.status(404).json({ error: `Todo with id ${id} not found.` });
     };
 
-    public createTodo = (req: Request, res: Response) => {
+    //* create new Todo task
+    public createTodo = async (req: Request, res: Response) => {
         const { text } = req.body;
         if (!text) return res.status(400).json({ error: "Text property is required." });
 
-        const newTodo = {
-            id: todos.length + 1,
-            text,
-            createdAt: new Date(),
-        };
-
-        todos.push(newTodo);
+        const newTodo = await prisma.todo.create({
+            data: { text },
+        });
 
         res.json(newTodo);
     };
 
-    public updateTodo = (req: Request, res: Response) => {
+    //* update one Todo task
+    public updateTodo = async (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
-        const todo = todos.find(todo => todo.id === id);
+        const todo = await prisma.todo.findFirst({
+            where: { id },
+        });
+
         if (!todo) return res.status(404).json({ error: `Todo with id ${id} not found` });
 
-        const { text, createdAt } = req.body;
+        const { text, completedAt } = req.body;
 
-        todo.text = text || todo.text;
-        createdAt === "null"
-            ? (todo.createdAt = null)
-            : (todo.createdAt = new Date(createdAt || todo.createdAt));
+        const updatedTodo = await prisma.todo.update({
+            where: { id },
+            data: {
+                text,
+                completedAt: completedAt ? new Date(completedAt) : null,
+            },
+        });
 
-        res.json(todo);
+        res.json(updatedTodo);
     };
 
-    public deleteTodo = (req: Request, res: Response) => {
+    //* delete one Todo task
+    public deleteTodo = async (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
-        const todo = todos.find(todo => todo.id === id);
+        const todo = await prisma.todo.findFirst({
+            where: { id },
+        });
+
         if (!todo) return res.status(404).json({ error: `Todo with id ${id} not found` });
 
-        todos.splice(todos.indexOf(todo), 1);
+        const deletedTodo = await prisma.todo.delete({
+            where: { id },
+        });
 
-        res.json(todo);
+        deletedTodo
+            ? res.json(deletedTodo)
+            : res.status(400).json({ error: `Failed to delete todo with id ${id}.` });
     };
 }
