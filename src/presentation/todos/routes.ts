@@ -13,9 +13,9 @@ export class TodoRoutes {
         const todosController: TodosController = new TodosController(todoRepository);
 
         router.get("/", todosController.getTodos);
-        router.get("/:id", todosController.getTodoById);
         router.post("/", todosController.createTodo);
         router.put("/:id", todosController.updateTodo);
+        router.get("/:id", todosController.getTodoById);
         router.delete("/:id", todosController.deleteTodo);
 
         return router;
