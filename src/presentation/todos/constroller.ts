@@ -13,7 +13,7 @@ export class TodosController {
             .catch(error => res.status(400).json({ error }));
     };
 
-    public getTodoById = async (req: Request, res: Response) => {
+    public getTodoById = (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
@@ -23,7 +23,7 @@ export class TodosController {
             .catch(error => res.status(400).json({ error }));
     };
 
-    public createTodo = async (req: Request, res: Response) => {
+    public createTodo = (req: Request, res: Response) => {
         const [error, createTodoDto] = CreateTodoDto.create(req.body);
         if (error) return res.status(400).json({ error });
 
@@ -33,7 +33,7 @@ export class TodosController {
             .catch(error => res.status(400).json({ error }));
     };
 
-    public updateTodo = async (req: Request, res: Response) => {
+    public updateTodo = (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
         const [error, updateTodoDto] = UpdateTodoDto.create({
             ...req.body,
@@ -48,7 +48,7 @@ export class TodosController {
             .catch(error => res.status(400).json({ error }));
     };
 
-    public deleteTodo = async (req: Request, res: Response) => {
+    public deleteTodo = (req: Request, res: Response) => {
         const id: number = Number(req.params.id);
         if (isNaN(id)) return res.status(400).json({ error: "Id argument is not a number." });
 
