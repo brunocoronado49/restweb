@@ -8,3 +8,4 @@
 .env
 /generated/prisma
 /coverage
+/src/generated/prisma
