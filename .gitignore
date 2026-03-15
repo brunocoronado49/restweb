@@ -3,7 +3,7 @@
 /keys
 /public/assets/heroes
 /postgres
-/prisma
+/prisma/migrations
 /src/generated
 .env
 /generated/prisma
