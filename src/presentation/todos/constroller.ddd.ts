@@ -27,7 +27,7 @@ export class TodosController {
     if (error) return res.status(400).json({ error });
 
     const todo = await this.todoRepository.create(createTodoDto!);
-    res.json(todo);
+    res.status(201).json(todo);
   };
 
   public updateTodo = async (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ export class TodosController {
       const updatedTodo = await this.todoRepository.update(updateTodoDto!);
       return res.json(updatedTodo);
     } catch (error) {
-      res.status(400).json({ error });
+      res.status(404).json({ error });
     }
   };
 
@@ -55,7 +55,7 @@ export class TodosController {
       const deletedTodo = await this.todoRepository.delete(id);
       res.json(deletedTodo);
     } catch (error) {
-      res.status(400).json({ error });
+      res.status(404).json({ error });
     }
   };
 }

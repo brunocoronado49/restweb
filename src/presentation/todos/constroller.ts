@@ -29,7 +29,7 @@ export class TodosController {
 
     new CreateTodo(this.todoRepository)
       .execute(createTodoDto!)
-      .then(todo => res.json(todo))
+      .then(todo => res.status(201).json(todo))
       .catch(error => res.status(400).json({ error }));
   };
 
@@ -45,7 +45,7 @@ export class TodosController {
     new UpdateTodo(this.todoRepository)
       .execute(updateTodoDto!)
       .then(todo => res.json(todo))
-      .catch(error => res.status(400).json({ error }));
+      .catch(error => res.status(404).json({ error }));
   };
 
   public deleteTodo = (req: Request, res: Response) => {
@@ -55,6 +55,6 @@ export class TodosController {
     new DeleteTodo(this.todoRepository)
       .execute(id)
       .then(todo => res.json(todo))
-      .catch(error => res.status(400).json({ error }));
+      .catch(error => res.status(404).json({ error }));
   };
 }
